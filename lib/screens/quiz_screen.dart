@@ -18,7 +18,7 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> {
   static const int questionsPerRound = 10;
 
-  String _phase = 'intro'; // intro / question / result
+  String _phase = 'intro';
   late List<QuizQuestion> _questions;
   int _index = 0;
   int _score = 0;
@@ -48,10 +48,15 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void _answer(int optionIndex) {
     if (_selected != null) return;
+
     final question = _questions[_index];
     final correct = optionIndex == question.correctIndex;
+
     setState(() => _selected = optionIndex);
-    if (correct) _score++;
+
+    if (correct) {
+      _score++;
+    }
   }
 
   void _next() {
@@ -84,6 +89,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   Widget _buildIntro(ColorScheme scheme) {
     final progress = context.watch<ProgressProvider>();
+
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -95,7 +101,10 @@ class _QuizScreenState extends State<QuizScreen> {
               height: 100,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF1A237E), Color(0xFF3949AB)],
+                  colors: [
+                    Color(0xFF1A237E),
+                    Color(0xFF3949AB),
+                  ],
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                 ),
@@ -108,17 +117,24 @@ class _QuizScreenState extends State<QuizScreen> {
                   ),
                 ],
               ),
-              child:
-                  const Icon(Icons.quiz_rounded, color: Colors.white, size: 46),
+              child: const Icon(
+                Icons.quiz_rounded,
+                color: Colors.white,
+                size: 46,
+              ),
             ),
             const SizedBox(height: 22),
             const Text(
               'اختبر فهمك للأرجوزة',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+              ),
             ),
             const SizedBox(height: 10),
             Text(
-              '10 أسئلة عشوائية من أرجوزة الملل والنحل:\nأبوابها، أقوالها، ومصطلحاتها. في كل جولة أسئلة جديدة!',
+              '10 أسئلة عشوائية من أرجوزة الملل والنحل:\n'
+              'أبوابها، أقوالها، ومصطلحاتها. في كل جولة أسئلة جديدة!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: scheme.onSurfaceVariant,
@@ -129,8 +145,10 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
             const SizedBox(height: 20),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 18,
+                vertical: 10,
+              ),
               decoration: BoxDecoration(
                 color: scheme.secondary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(16),
@@ -138,8 +156,11 @@ class _QuizScreenState extends State<QuizScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.emoji_events_outlined,
-                      color: scheme.secondary, size: 18),
+                  Icon(
+                    Icons.emoji_events_outlined,
+                    color: scheme.secondary,
+                    size: 18,
+                  ),
                   const SizedBox(width: 7),
                   Text(
                     'أفضل نتيجة: ${progress.quizBest}/$questionsPerRound',
@@ -156,12 +177,19 @@ class _QuizScreenState extends State<QuizScreen> {
             FilledButton.icon(
               onPressed: _startQuiz,
               style: FilledButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 14,
+                ),
               ),
               icon: const Icon(Icons.play_arrow_rounded),
-              label: const Text('ابدأ الاختبار',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+              label: const Text(
+                'ابدأ الاختبار',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ),
           ],
         ),
@@ -176,7 +204,6 @@ class _QuizScreenState extends State<QuizScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 30),
       children: [
-        // شريط التقدم
         Row(
           children: [
             Text(
@@ -208,14 +235,15 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
         ),
         const SizedBox(height: 18),
-        // نص السؤال
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             color: scheme.primary.withOpacity(0.06),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: scheme.primary.withOpacity(0.2)),
+            border: Border.all(
+              color: scheme.primary.withOpacity(0.2),
+            ),
           ),
           child: Text(
             question.question,
@@ -227,14 +255,12 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
         ),
         const SizedBox(height: 16),
-        // الخيارات
         for (var i = 0; i < question.options.length; i++)
           _OptionCard(
             label: question.options[i],
             state: _optionState(question, i),
             onTap: () => _answer(i),
           ),
-        // التغذية الراجعة
         if (answered) ...[
           const SizedBox(height: 14),
           Container(
@@ -303,8 +329,12 @@ class _QuizScreenState extends State<QuizScreen> {
               size: 18,
             ),
             label: Text(
-              _index + 1 >= _questions.length ? 'عرض النتيجة' : 'السؤال التالي',
-              style: const TextStyle(fontWeight: FontWeight.w800),
+              _index + 1 >= _questions.length
+                  ? 'عرض النتيجة'
+                  : 'السؤال التالي',
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ),
         ],
@@ -313,17 +343,28 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   int _optionState(QuizQuestion question, int index) {
-    if (_selected == null) return 0; // لم تُجب بعد
-    if (index == question.correctIndex) return 1; // الصحيح
-    if (index == _selected) return 2; // المختار الخاطئ
-    return 3; // باقي الخيارات
+    if (_selected == null) {
+      return 0;
+    }
+
+    if (index == question.correctIndex) {
+      return 1;
+    }
+
+    if (index == _selected) {
+      return 2;
+    }
+
+    return 3;
   }
 
   Widget _buildResult(ColorScheme scheme) {
     final percent = (_score / _questions.length * 100).round();
+
     String message;
     IconData icon;
     Color color;
+
     if (percent >= 90) {
       message = 'ممتاز! أنت متمكن من الأرجوزة تماماً';
       icon = Icons.emoji_events_rounded;
@@ -353,7 +394,10 @@ class _QuizScreenState extends State<QuizScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: color.withOpacity(0.1),
-                border: Border.all(color: color.withOpacity(0.5), width: 3),
+                border: Border.all(
+                  color: color.withOpacity(0.5),
+                  width: 3,
+                ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -378,13 +422,20 @@ class _QuizScreenState extends State<QuizScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            Icon(icon, size: 40, color: color),
+            Icon(
+              icon,
+              size: 40,
+              color: color,
+            ),
             const SizedBox(height: 12),
             Text(
               message,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                  fontSize: 15.5, fontWeight: FontWeight.w800, height: 1.6),
+                fontSize: 15.5,
+                fontWeight: FontWeight.w800,
+                height: 1.6,
+              ),
             ),
             const SizedBox(height: 28),
             Row(
@@ -393,14 +444,22 @@ class _QuizScreenState extends State<QuizScreen> {
                 FilledButton.icon(
                   onPressed: _startQuiz,
                   icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('إعادة الاختبار',
-                      style: TextStyle(fontWeight: FontWeight.w800)),
+                  label: const Text(
+                    'إعادة الاختبار',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 12),
                 OutlinedButton(
                   onPressed: () => setState(() => _phase = 'intro'),
-                  child: const Text('الرجوع',
-                      style: TextStyle(fontWeight: FontWeight.w800)),
+                  child: const Text(
+                    'الرجوع',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -414,7 +473,7 @@ class _QuizScreenState extends State<QuizScreen> {
 /// بطاقة خيار في السؤال مع تمييز صح/خطأ.
 class _OptionCard extends StatelessWidget {
   final String label;
-  final int state; // 0 عادي، 1 صحيح، 2 مختار خاطئ، 3 مطفأ
+  final int state;
   final VoidCallback onTap;
 
   const _OptionCard({
@@ -439,17 +498,20 @@ class _OptionCard extends StatelessWidget {
         textColor = Colors.green;
         trailing = Icons.check_circle_rounded;
         break;
+
       case 2:
         fillColor = scheme.error.withOpacity(0.1);
         borderColor = scheme.error;
         textColor = scheme.error;
         trailing = Icons.cancel_rounded;
         break;
+
       case 3:
         fillColor = null;
         borderColor = scheme.outlineVariant.withOpacity(0.5);
         textColor = scheme.onSurfaceVariant;
         break;
+
       default:
         fillColor = scheme.surface;
         borderColor = scheme.outlineVariant;
@@ -465,10 +527,15 @@ class _OptionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           onTap: state == 0 ? onTap : null,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 13,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: borderColor ?? Colors.transparent),
+              border: Border.all(
+                color: borderColor ?? Colors.transparent,
+              ),
             ),
             child: Row(
               children: [
@@ -483,7 +550,12 @@ class _OptionCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (trailing != null) Icon(trailing, size: 19, color: textColor),
+                if (trailing != null)
+                  Icon(
+                    trailing,
+                    size: 19,
+                    color: textColor,
+                  ),
               ],
             ),
           ),
