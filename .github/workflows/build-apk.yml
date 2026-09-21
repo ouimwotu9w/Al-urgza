@@ -25,6 +25,12 @@ jobs:
           flutter-version: "3.47.5"
           channel: stable
           cache: true
+          pub-cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-${{ hashFiles('al_urjuza/pubspec.lock') }}"
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-${{ hashFiles('al_urjuza/pubspec.lock') }}"
+
+      - name: تفعيل كاش Gradle
+        uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
 
       - name: تنزيل الحزم
         working-directory: al_urjuza
