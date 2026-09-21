@@ -315,7 +315,7 @@ class _QuizScreenState extends State<QuizScreen> {
   int _optionState(QuizQuestion question, int index) {
     if (_selected == null) return 0; // لم تُجب بعد
     if (index == question.correctIndex) return 1; // الصحيح
-    if (_selected != null && index == _selected) return 2; // المختار الخاطئ
+    if (index == _selected) return 2; // المختار الخاطئ
     return 3; // باقي الخيارات
   }
 
