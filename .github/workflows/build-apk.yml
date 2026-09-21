@@ -26,26 +26,23 @@ jobs:
           channel: stable
           cache: true
           pub-cache: true
-          cache-key: "flutter-:os:-:channel:-:version:-:arch:-${{ hashFiles('al_urjuza/pubspec.lock') }}"
-          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-${{ hashFiles('al_urjuza/pubspec.lock') }}"
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-${{ hashFiles('pubspec.lock') }}"
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-${{ hashFiles('pubspec.lock') }}"
 
       - name: تفعيل كاش Gradle
         uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
 
       - name: تنزيل الحزم
-        working-directory: al_urjuza
         run: flutter pub get
 
       - name: فحص المشروع
-        working-directory: al_urjuza
         run: flutter analyze
 
       - name: بناء APK
-        working-directory: al_urjuza
         run: flutter build apk --release
 
       - name: رفع ملف APK
         uses: actions/upload-artifact@v4
         with:
           name: al-urjuza-apk
-          path: al_urjuza/build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
