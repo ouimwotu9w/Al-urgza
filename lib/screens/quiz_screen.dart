@@ -468,7 +468,7 @@ class _OptionCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: borderColor ?? Colors.transparent),
+              border: Border.all(color: borderColor),
             ),
             child: Row(
               children: [
